@@ -31,8 +31,12 @@ const validateTodoInput = (message, isDone) => {
         return 'The isDone property is required.';
     }
 
-    if (message.length <= 0 || message.length > 280) {
-        return 'The message can not be empty and cannot exceed 280 characters.';
+    if (message.length = 0) {
+        return 'The message cannot be empty.';
+    }
+
+    if (message.length > 280) {
+        return 'The message cannot exceed 280 characters.';
     }
 
     if (isDone !== 'true' && isDone !== 'false') {
