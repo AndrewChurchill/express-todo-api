@@ -1,0 +1,17 @@
+{
+  "name": "express-todo-api",
+  "version": "0.0.0",
+  "description": "A simple todo API written in ExpressJS.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Churchill",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
+  }
+}
