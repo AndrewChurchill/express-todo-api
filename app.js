@@ -3,6 +3,21 @@ const ejs = require('ejs');
 const express = require('express');
 const mongoose = require('mongoose');
 
+let port = process.env.PORT;
+if (!port) {
+    port = 3000;
+}
+
+let dbConnectionString = process.env.DB_CONNECTION_STRING;
+if (!dbConnectionString) {
+    dbConnectionString = 'mongodb://localhost:27017/todoDB?retryWrites=true&w=majority';
+}
+
+let basicAuthToken = process.env.BASIC_AUTH_TOKEN;
+if (!basicAuthToken) {
+    basicAuthToken = 'MySuperSecretPassword123&';
+}
+
 const app = new express();
 
 app.set('view engine', ejs);
@@ -15,7 +30,7 @@ app.use(express.static('public'));
 
 app.use((req, res, next) => {
     // This is just a placeholder for actual authentication/authorization.
-    if (req.header('Authorization') !== 'MySuperSecretPassword123&') {
+    if (req.header('Authorization') !== basicAuthToken) {
         res.status(401).send();
         return;
     }
@@ -23,7 +38,7 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.connect('mongodb://localhost:27017/todoDB', {
+mongoose.connect(dbConnectionString, {
     useNewUrlParser: true,
 });
 
@@ -176,11 +191,6 @@ app.route(todoRoute + '/:id')
             }
         });
     });
-
-let port = process.env.PORT;
-if (port == null || port == "") {
-    port = 3000;
-}
 
 app.listen(port, () => {
     console.log('Server started on port', port);
