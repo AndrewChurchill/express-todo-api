@@ -47,6 +47,10 @@ const TodoItem = mongoose.model("TodoItem", {
     isDone: Boolean,
 });
 
+const canConvertToBool = bool => {
+    return bool === 'true' || bool === 'false';
+};
+
 const validateTodoInput = (message, isDone) => {
     if (!message) {
         return 'The message property is required.';
@@ -64,7 +68,7 @@ const validateTodoInput = (message, isDone) => {
         return 'The message cannot exceed 280 characters.';
     }
 
-    if (isDone !== 'true' && isDone !== 'false') {
+    if (!canConvertToBool(isDone)) {
         return 'Property isDone must be boolean.';
     }
 };
@@ -80,8 +84,20 @@ const validateIdInput = id => {
 const todoRoute = '/api/v1/todos';
 
 app.route(todoRoute)
-    .get((_, res) => {
-        TodoItem.find((err, foundItems) => {
+    .get((req, res) => {
+        const queryParams = {};
+
+        const isDoneParam = req.query.isDone;
+        if (isDoneParam) {
+            if (!canConvertToBool(isDoneParam)) {
+                res.status(400).send('Cannot convert isDone query param to boolean');
+                return;
+            }
+
+            queryParams.isDone = isDoneParam;
+        }
+
+        TodoItem.find(queryParams, (err, foundItems) => {
             if (err) {
                 console.error('Failed to get all todo items:', err);
                 res.status(500).send('An unknown error occurred.');
