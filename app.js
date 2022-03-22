@@ -129,7 +129,7 @@ app.route(todoRoute)
                 console.error('Failed to create a todo item:', err);
                 res.status(500).send('An unknown error occurred.');
             } else {
-                res.status(201).location(todoRoute + '/' + created.id).send();
+                res.status(204).location(todoRoute + '/' + created.id).send();
             }
         });
     });
