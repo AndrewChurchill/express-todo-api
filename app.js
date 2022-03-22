@@ -13,6 +13,16 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static('public'));
 
+app.use((req, res, next) => {
+    // This is just a placeholder for actual authentication/authorization.
+    if (req.header('Authorization') !== 'MySuperSecretPassword123&') {
+        res.status(401).send();
+        return;
+    }
+
+    next();
+});
+
 mongoose.connect('mongodb://localhost:27017/todoDB', {
     useNewUrlParser: true,
 });
