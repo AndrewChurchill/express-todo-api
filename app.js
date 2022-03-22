@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const ejs = require('ejs');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -21,6 +22,8 @@ if (!basicAuthToken) {
 const app = new express();
 
 app.set('view engine', ejs);
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: true,
